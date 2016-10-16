@@ -19,9 +19,7 @@ import org.apache.storm.tuple.Values;
 
 import java.io.IOException;
 
-/**
- * Created by karel_alfonso on 16/10/2016.
- */
+
 public class WordCountTopology {
     public static void main(String[] args) throws InvalidTopologyException, AuthorizationException, AlreadyAliveException {
         FixedBatchSpout spout = new FixedBatchSpout(new Fields("sentence"), 3,

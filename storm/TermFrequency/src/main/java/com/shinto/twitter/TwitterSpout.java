@@ -13,9 +13,7 @@ import twitter4j.conf.ConfigurationBuilder;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Created by karel_alfonso on 16/10/2016.
- */
+
 public class TwitterSpout extends BaseRichSpout {
     private LinkedBlockingQueue<Status> queue = new LinkedBlockingQueue<Status>(1000);
     private TwitterStream twitterStream;

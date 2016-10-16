@@ -8,9 +8,7 @@ import org.apache.storm.tuple.Values;
 import twitter4j.HashtagEntity;
 import twitter4j.Status;
 
-/**
- * Created by karel_alfonso on 16/10/2016.
- */
+
 public class TwitterHashtagFunction extends BaseFunction {
     public static Function getHashtag() {
         return new TwitterHashtagFunction();

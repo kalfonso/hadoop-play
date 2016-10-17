@@ -7,7 +7,10 @@ import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichSpout;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
-import twitter4j.*;
+import twitter4j.Status;
+import twitter4j.StatusListener;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.util.Map;
@@ -15,10 +18,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class TwitterSpout extends BaseRichSpout {
+    private Map<String, String> twitterConfig;
     private LinkedBlockingQueue<Status> queue = new LinkedBlockingQueue<Status>(1000);
     private TwitterStream twitterStream;
     private SpoutOutputCollector spoutOutputCollector;
 
+    public TwitterSpout(Map<String, String> twitterConfig) {
+        this.twitterConfig = twitterConfig;
+    }
 
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
         outputFieldsDeclarer.declare(new Fields("tweet"));
@@ -31,10 +38,10 @@ public class TwitterSpout extends BaseRichSpout {
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 
         configurationBuilder.setDebugEnabled(true)
-            .setOAuthConsumerKey(System.getenv("TWITTER_CONSUMER_KEY"))
-            .setOAuthConsumerSecret(System.getenv("TWITTER_CONSUMER_SECRET"))
-            .setOAuthAccessToken(System.getenv("TWITTER_ACCESS_TOKEN"))
-            .setOAuthAccessTokenSecret(System.getenv("TWITTER_ACCESS_TOKEN_SECRET"));
+            .setOAuthConsumerKey(twitterConfig.get("consumer.key"))
+            .setOAuthConsumerSecret(twitterConfig.get("consumer.secret"))
+            .setOAuthAccessToken(twitterConfig.get("access.token"))
+            .setOAuthAccessTokenSecret(twitterConfig.get("access.token.secret"));
 
         twitterStream = new TwitterStreamFactory(configurationBuilder.build()).getInstance();
         twitterStream.addListener(statusListener);
